@@ -73,7 +73,7 @@ $(BUILD_LIB_DIR)2DTransformation.o: $(ENGINE_DIR)gfx/2D/2DTransformation.cpp $(I
 	$(CC) $(FLAGS) -c $< -o $@
 $(BUILD_LIB_DIR)2DConstruct.o: $(ENGINE_DIR)gfx/2D/2DConstruct.cpp $(INCLUDE_DIR)gfx/2D/Construct.hpp
 	$(CC) $(FLAGS) -c $< -o $@
-$(BUILD_LIB_DIR)2DVertexAdapter.o: $(ENGINE_DIR)gfx/2D/2DVertexAdapter.cpp $(INCLUDE_DIR)gfx/2D/VertexAdapter.hpp
+$(BUILD_LIB_DIR)2DVertexAdapter.o: $(ENGINE_DIR)gfx/2D/2DVertexAdapter.cpp $(INCLUDE_DIR)gfx/2D/VertexAdapter.hpp $(INCLUDE_DIR)gfx/2D/VertexAdapter.inl
 	$(CC) $(FLAGS) -c $< -o $@
 $(BUILD_LIB_DIR)%.o: $(ENGINE_DIR)lib/%.cpp
 	$(CC) -std=$(CPP_VER) $(OPTIMIZATION) -I$(INCLUDE_DIR) -c $< -o $@

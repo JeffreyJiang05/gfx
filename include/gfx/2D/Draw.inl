@@ -8,6 +8,16 @@
 GFX_BEGIN
 GFX_GFX2D_BEGIN
 
+namespace _details
+{
+    template<unsigned N>
+    void frame_vector(const img& img, vec<N, int>& data)
+    {
+        data[X] += (img.width() >> 1);
+        data[Y] = (img.height() >> 1) - data[Y];
+    }
+}
+
 template<template<typename> class EdgeIterator, typename LineFunc>
 std::enable_if_t<_details::is_valid_line_algo<LineFunc>> draw_construct(img& image, Edges<EdgeIterator> edges, img::pix pixel, LineFunc line_algo)
 {

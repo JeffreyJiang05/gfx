@@ -69,6 +69,14 @@ auto vec<3,T>::z() const -> value_type
     return _data[2];
 }
 
+// EXPLICIT CONVERSIONS
+template<typename T>
+template<typename U>
+vec<3,T>::operator vec<2, U>()
+{
+    return vec<2, U>{ static_cast<U>(_data[0]), static_cast<U>(_data[1]) };
+}
+
 // OPERATORS
 template<typename T>
 template<typename U>

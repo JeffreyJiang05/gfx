@@ -80,6 +80,21 @@ auto vec<4,T>::w() const -> value_type
     return _data[3];
 }
 
+// EXPLICIT CONVERSIONS
+template<typename T>
+template<typename U>
+vec<4,T>::operator vec<2,U>()
+{
+    return vec<2, U>{ static_cast<U>(_data[0]), static_cast<U>(_data[1]) };
+}
+
+template<typename T>
+template<typename U>
+vec<4,T>::operator vec<3,U>()
+{
+    return vec<3, U>{ static_cast<U>(_data[0]), static_cast<U>(_data[1]), static_cast<U>(_data[2]) };
+}
+
 // OPERATORS
 template<typename T>
 template<typename U>

@@ -32,7 +32,7 @@ public:
     using const_iterator = VertexList::list_type::const_iterator;
 
     VertexList() = default;
-    VertexList(const VertexList&) = default;
+    VertexList(const VertexList&)  = default;
     VertexList(VertexList&&) = default;
     VertexList& operator=(const VertexList&) = default;
     VertexList& operator=(VertexList&&) = default;

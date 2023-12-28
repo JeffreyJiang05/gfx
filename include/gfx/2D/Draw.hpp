@@ -14,6 +14,15 @@
 GFX_BEGIN
 GFX_GFX2D_BEGIN
 
+namespace _details
+{
+    constexpr static inline unsigned int X = 0;
+    constexpr static inline unsigned int Y = 1;
+
+    template<unsigned N>
+    void frame_vector(const img& img, vec<N, int>& data);
+}
+
 // Uses Bresenham's algorithm
 void draw_line(img& image, ivec2 p0, ivec2 p1, img::pix pixel);
 
@@ -30,6 +39,14 @@ std::enable_if_t<_details::is_valid_line_algo<LineFunc>> draw_construct(img& ima
 
 template<template<typename> class EdgeIterator>
 void draw_construct(img& image, Edges<EdgeIterator> edges, img::pix pixel);
+
+void draw_triangle_wireframe(img& image, ivec3 v0, ivec3 v1, ivec3 v2, img::pix pixel);
+
+void draw_triangle_antialias_wireframe(img& image, ivec3 v0, ivec3 v1, ivec3 v2, img::pix pixel);
+
+void draw_triangle_filled(img& image, ivec3 v0, ivec3 v1, ivec3 v2, img::pix pixel);
+
+
 
 GFX_GFX2D_END
 GFX_END
