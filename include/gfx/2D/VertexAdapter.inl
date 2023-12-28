@@ -8,7 +8,12 @@
 GFX_BEGIN
 GFX_GFX2D_BEGIN
 
-// DEFINE ITERATOR WRAPPER
+// These are read-only iterators. They copy the data into a container which
+// can be accessed. May be more cache-friendly as it avoid pointer indirection.
+
+// DEFINE CONTAINER WRAPPER
+
+// EDGE CONTAINER
 
 template<template<typename> typename EdgeIterator>
 Edges<EdgeIterator>::Edges(VertexList& vertices) : _vertices{ vertices } {}
@@ -37,6 +42,35 @@ auto Edges<EdgeIterator>::cend() const -> const_iterator
     return EdgeIterator{ _vertices.cend(), _vertices.cbegin(), _vertices.cend() };
 }
 
+// TRIANGLE CONTAINER
+
+template<typename IdxContainer, typename Enable>
+Triangles<IdxContainer, Enable>::Triangles(const VertexList& vertices, const IdxContainer& indices)
+        : _vertices{ vertices }, _indices{ indices } {}
+
+template<typename IdxContainer, typename Enable>
+auto Triangles<IdxContainer, Enable>::begin() -> iterator
+{
+    return { _indices, _vertices, 0 };
+}
+
+template<typename IdxContainer, typename Enable>
+auto Triangles<IdxContainer, Enable>::cbegin() const -> const_iterator
+{
+    return { _indices, _vertices, 0 };
+}
+
+template<typename IdxContainer, typename Enable>
+auto Triangles<IdxContainer, Enable>::end() -> iterator
+{
+    return { _indices, _vertices, static_cast<unsigned>(std::size(_indices)) };
+}
+
+template<typename IdxContainer, typename Enable>
+auto Triangles<IdxContainer, Enable>::cend() const -> const_iterator
+{
+    return { _indices, _vertices, static_cast<unsigned>(std::size(_indices)) };
+}
 
 // DEFINE ITERATORS
 
@@ -172,6 +206,72 @@ template<typename I>
 bool operator!=(const Curve<I>& a, const Curve<I>& b)
 {
     return a._first != b._first;
+}
+
+// DEFINE TRIANGLE ITERATOR
+
+template<typename IdxContainer>
+triangle_iterator<IdxContainer>::triangle_iterator(const IdxContainer& indices, const VertexList& vertices, unsigned int pos)
+        : _indices{ indices }, _vertices{ vertices }, _pos{ pos } {}
+
+template<typename IdxContainer>
+auto triangle_iterator<IdxContainer>::operator*() const -> reference
+{
+    return { 
+        _vertices[_indices[_pos + 0]],
+        _vertices[_indices[_pos + 1]],
+        _vertices[_indices[_pos + 2]]
+    };
+}
+
+template<typename IdxContainer>
+auto triangle_iterator<IdxContainer>::operator->() const -> pointer
+{
+    return **this;
+}
+
+template<typename IdxContainer>
+auto triangle_iterator<IdxContainer>::operator++() -> triangle_iterator&
+{
+    _pos += 3;
+    return *this;
+}
+
+template<typename IdxContainer>
+auto triangle_iterator<IdxContainer>::operator++(int) -> triangle_iterator
+{
+    triangle_iterator<IdxContainer> res{ *this };
+    _pos += 3;
+    return res;
+}
+
+template<typename IdxContainer>
+auto triangle_iterator<IdxContainer>::operator--() -> triangle_iterator&
+{
+    _pos -= 3;
+    return *this;
+}
+
+template<typename IdxContainer>
+auto triangle_iterator<IdxContainer>::operator--(int) -> triangle_iterator
+{
+    triangle_iterator<IdxContainer> res{ *this };
+    _pos -= 3;
+    return res;
+}
+
+template<typename Container>
+bool operator==(const triangle_iterator<Container>& a, const triangle_iterator<Container>& b)
+{
+    return (&(a._indices) == &(b._indices)) 
+            && (&(a._vertices) == &(b._vertices)) 
+            && (a._pos == b._pos);
+}
+
+template<typename Container>
+bool operator!=(const triangle_iterator<Container>& a, const triangle_iterator<Container>& b)
+{
+    return !(a == b);
 }
 
 GFX_GFX2D_END

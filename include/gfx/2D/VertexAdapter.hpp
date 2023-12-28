@@ -1,6 +1,7 @@
 #ifndef JGRAPHICS_2D_VERTEX_ADAPTER_HPP
 #define JGRAPHICS_2D_VERTEX_ADAPTER_HPP
 
+#include <tuple>
 #include <utility>
 
 #include "VertexList.hpp"
@@ -109,8 +110,81 @@ public:
     friend bool operator!=(const Curve<I>& a, const Curve<I>& b);
 }; 
 
+namespace _details
+{
+    template<typename T>
+    using iterator_t = decltype(std::begin(std::declval<T&>()));
+
+    template<typename Container>
+    constexpr inline bool is_index_container_v = std::is_unsigned_v<typename std::iterator_traits<iterator_t<Container>>::value_type> 
+            && std::is_same_v<typename std::iterator_traits<iterator_t<Container>>::iterator_category, std::random_access_iterator_tag>;
+
+    template<typename Container>
+    struct is_index_container : std::bool_constant<is_index_container_v<Container>> {};
+
+    class triangle_wrapper
+    {
+    private:
+        using triangle_vertices = std::tuple<vec3, vec3, vec3>;
+        triangle_vertices _vertices;
+    public:
+        triangle_wrapper(triangle_vertices points);
+        const triangle_vertices* operator->() const;  
+    };
+
+}
+
+// Triangle Adapter Iterator
+template<typename IdxContainer>
+class triangle_iterator
+{
+private:
+    const IdxContainer& _indices;
+    const VertexList& _vertices;
+    unsigned int _pos;
+public:
+    using vertices = std::tuple<vec3, vec3, vec3>;
+
+    using iterator_category = std::bidirectional_iterator_tag;
+    using difference_type = std::ptrdiff_t;
+    using value_type = vertices;
+    using pointer = _details::triangle_wrapper;
+    using reference = vertices;
+
+    triangle_iterator(const IdxContainer& indices, const VertexList& vertices, unsigned int pos);
+
+    reference operator*() const;
+    pointer operator->() const;
+    triangle_iterator& operator++();
+    triangle_iterator operator++(int);
+    triangle_iterator& operator--();
+    triangle_iterator operator--(int);
+
+    template<typename Container>
+    friend bool operator==(const triangle_iterator<Container>& a, const triangle_iterator<Container>& b);
+    template<typename Container>
+    friend bool operator!=(const triangle_iterator<Container>& a, const triangle_iterator<Container>& b);
+};
+
 // Triangle Adapter to wrap VertexList and an index list. 
-class Triangles;
+template<typename IdxContainer, typename Enable = std::enable_if<_details::is_index_container_v<IdxContainer>>>
+class Triangles
+{
+private:
+    const VertexList& _vertices;
+    const IdxContainer& _indices;
+public:
+    using iterator = triangle_iterator<IdxContainer>;
+    using const_iterator = iterator; // since these iterators are read-only
+
+    Triangles(const VertexList& vertices, const IdxContainer& indices);
+
+    iterator begin();
+    const_iterator cbegin() const;
+    iterator end();
+    const_iterator cend() const;
+
+};
 
 GFX_GFX2D_END
 GFX_END

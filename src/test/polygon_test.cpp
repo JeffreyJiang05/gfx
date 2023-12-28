@@ -3,6 +3,8 @@
 #include "gfx/base/Pixel.hpp"
 #include "gfx/2D/Transformation.hpp"
 
+#include "math/Constants.hpp"
+
 #include <iostream>
 #include <thread>
 
@@ -23,15 +25,9 @@ int main()
     int total_squares = 20;
     for (int i = 0; i < total_squares; ++i)
     {   
-        
-        // res = rotate(i * 2 * M_PI / total_squares) 
-        //         * translate(vec2{ 150, 0 }) 
-        //         * scale(vec2{ sin(i * 2 * M_PI / total_squares), sin(i * 2 * M_PI / total_squares) }) 
-        //         * square;
-        
-        res = square | scale(vec2{ sin(i * 2 * M_PI / total_squares), sin(i * 2 * M_PI / total_squares) })
+        res = square | scale(vec2{ sin(i * TAU / total_squares), sin(i * TAU / total_squares) })
                      | translate(vec2{ 150, 0 })
-                     | rotate(i * 2 * M_PI / total_squares);
+                     | rotate(i * TAU / total_squares);
                 
         draw_construct(image, Edges<Polygon>{ res }, RandomPixelGenerator::instance().generate(), draw_antialias_line);
     }
