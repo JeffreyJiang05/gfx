@@ -1,0 +1,9 @@
+build/
+img/
+
+*.png
+*.gif
+*.o
+*.data
+
+.vscode/
