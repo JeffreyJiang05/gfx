@@ -44,30 +44,30 @@ auto Edges<EdgeIterator>::cend() const -> const_iterator
 
 // TRIANGLE CONTAINER
 
-template<typename IdxContainer, typename Enable>
-Triangles<IdxContainer, Enable>::Triangles(const VertexList& vertices, const IdxContainer& indices)
+template<typename ListType, typename IdxContainer, typename Enable>
+Triangles<ListType, IdxContainer, Enable>::Triangles(const ListType& vertices, const IdxContainer& indices)
         : _vertices{ vertices }, _indices{ indices } {}
 
-template<typename IdxContainer, typename Enable>
-auto Triangles<IdxContainer, Enable>::begin() -> iterator
+template<typename ListType, typename IdxContainer, typename Enable>
+auto Triangles<ListType, IdxContainer, Enable>::begin() -> iterator
 {
     return { _indices, _vertices, 0 };
 }
 
-template<typename IdxContainer, typename Enable>
-auto Triangles<IdxContainer, Enable>::cbegin() const -> const_iterator
+template<typename ListType, typename IdxContainer, typename Enable>
+auto Triangles<ListType, IdxContainer, Enable>::cbegin() const -> const_iterator
 {
     return { _indices, _vertices, 0 };
 }
 
-template<typename IdxContainer, typename Enable>
-auto Triangles<IdxContainer, Enable>::end() -> iterator
+template<typename ListType, typename IdxContainer, typename Enable>
+auto Triangles<ListType, IdxContainer, Enable>::end() -> iterator
 {
     return { _indices, _vertices, static_cast<unsigned>(std::size(_indices)) };
 }
 
-template<typename IdxContainer, typename Enable>
-auto Triangles<IdxContainer, Enable>::cend() const -> const_iterator
+template<typename ListType, typename IdxContainer, typename Enable>
+auto Triangles<ListType, IdxContainer, Enable>::cend() const -> const_iterator
 {
     return { _indices, _vertices, static_cast<unsigned>(std::size(_indices)) };
 }
@@ -210,12 +210,24 @@ bool operator!=(const Curve<I>& a, const Curve<I>& b)
 
 // DEFINE TRIANGLE ITERATOR
 
-template<typename IdxContainer>
-triangle_iterator<IdxContainer>::triangle_iterator(const IdxContainer& indices, const VertexList& vertices, unsigned int pos)
+namespace _details
+{
+    template<typename ListType>
+    triangle_wrapper<ListType>::triangle_wrapper(triangle_vertices points) : _vertices{ points } {}
+
+    template<typename ListType>
+    auto triangle_wrapper<ListType>::operator->() const -> const triangle_vertices*
+    {
+        return &_vertices;
+    }
+}
+
+template<typename IdxContainer, typename ListType>
+triangle_iterator<IdxContainer, ListType>::triangle_iterator(const IdxContainer& indices, const ListType& vertices, unsigned int pos)
         : _indices{ indices }, _vertices{ vertices }, _pos{ pos } {}
 
-template<typename IdxContainer>
-auto triangle_iterator<IdxContainer>::operator*() const -> reference
+template<typename IdxContainer, typename ListType>
+auto triangle_iterator<IdxContainer, ListType>::operator*() const -> reference
 {
     return { 
         _vertices[_indices[_pos + 0]],
@@ -224,52 +236,52 @@ auto triangle_iterator<IdxContainer>::operator*() const -> reference
     };
 }
 
-template<typename IdxContainer>
-auto triangle_iterator<IdxContainer>::operator->() const -> pointer
+template<typename IdxContainer, typename ListType>
+auto triangle_iterator<IdxContainer, ListType>::operator->() const -> pointer
 {
     return **this;
 }
 
-template<typename IdxContainer>
-auto triangle_iterator<IdxContainer>::operator++() -> triangle_iterator&
+template<typename IdxContainer, typename ListType>
+auto triangle_iterator<IdxContainer, ListType>::operator++() -> triangle_iterator&
 {
     _pos += 3;
     return *this;
 }
 
-template<typename IdxContainer>
-auto triangle_iterator<IdxContainer>::operator++(int) -> triangle_iterator
+template<typename IdxContainer, typename ListType>
+auto triangle_iterator<IdxContainer, ListType>::operator++(int) -> triangle_iterator
 {
-    triangle_iterator<IdxContainer> res{ *this };
+    triangle_iterator<IdxContainer, ListType> res{ *this };
     _pos += 3;
     return res;
 }
 
-template<typename IdxContainer>
-auto triangle_iterator<IdxContainer>::operator--() -> triangle_iterator&
+template<typename IdxContainer, typename ListType>
+auto triangle_iterator<IdxContainer, ListType>::operator--() -> triangle_iterator&
 {
     _pos -= 3;
     return *this;
 }
 
-template<typename IdxContainer>
-auto triangle_iterator<IdxContainer>::operator--(int) -> triangle_iterator
+template<typename IdxContainer, typename ListType>
+auto triangle_iterator<IdxContainer, ListType>::operator--(int) -> triangle_iterator
 {
-    triangle_iterator<IdxContainer> res{ *this };
+    triangle_iterator<IdxContainer, ListType> res{ *this };
     _pos -= 3;
     return res;
 }
 
-template<typename Container>
-bool operator==(const triangle_iterator<Container>& a, const triangle_iterator<Container>& b)
+template<typename Container, typename List>
+bool operator==(const triangle_iterator<Container, List>& a, const triangle_iterator<Container, List>& b)
 {
     return (&(a._indices) == &(b._indices)) 
             && (&(a._vertices) == &(b._vertices)) 
             && (a._pos == b._pos);
 }
 
-template<typename Container>
-bool operator!=(const triangle_iterator<Container>& a, const triangle_iterator<Container>& b)
+template<typename Container, typename List>
+bool operator!=(const triangle_iterator<Container, List>& a, const triangle_iterator<Container, List>& b)
 {
     return !(a == b);
 }

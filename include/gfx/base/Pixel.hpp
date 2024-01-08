@@ -70,14 +70,10 @@ namespace literals {
 GFX_END
 
 template<typename T>
-gfx::base::pixel<T> lerp(gfx::base::pixel<T> v0, gfx::base::pixel<T> v1, double t)
-{
-    return {
-        lerp(v0.red, v1.red, t),
-        lerp(v0.green, v1.green, t),
-        lerp(v0.blue, v1.blue, t)
-    };
-}
+gfx::base::pixel<T> lerp(gfx::base::pixel<T> v0, gfx::base::pixel<T> v1, double t);
+
+template<typename T>
+gfx::base::pixel<T> lerp(const gfx::base::pixel<T>& v0, const gfx::base::pixel<T>& v1, const gfx::base::pixel<T>& v2, vec2 bary);
 
 #include "Pixel.inl"
 

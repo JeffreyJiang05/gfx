@@ -19,8 +19,8 @@ namespace _details
     constexpr static inline unsigned int X = 0;
     constexpr static inline unsigned int Y = 1;
 
-    template<unsigned N>
-    void frame_vector(const img& img, vec<N, int>& data);
+    template<unsigned N, typename T>
+    void frame_vector(const img& img, vec<N, T>& data);
 }
 
 // Uses Bresenham's algorithm
@@ -46,7 +46,8 @@ void draw_triangle_antialias_wireframe(img& image, ivec3 v0, ivec3 v1, ivec3 v2,
 
 void draw_triangle_filled(img& image, ivec3 v0, ivec3 v1, ivec3 v2, img::pix pixel);
 
-
+template<typename Func, unsigned N, typename... Ts>
+void draw_triangle_filled(img& image, std::tuple<vec<N, double>, Ts...> d0, std::tuple<vec<N, double>, Ts...> d1, std::tuple<vec<N, double>, Ts...> d2, Func&& func);
 
 GFX_GFX2D_END
 GFX_END

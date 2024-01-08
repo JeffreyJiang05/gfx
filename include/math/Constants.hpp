@@ -3,7 +3,10 @@
 
 #include <cmath>
 
-constexpr inline double PI = 3.14159265358979323846;
-constexpr inline double TAU = 2 * PI;
+inline constexpr double PI = 3.14159265358979323846;
+inline constexpr double TAU = 2 * PI;
+
+inline constexpr double INV_PI = 1 / PI;
+inline constexpr double INV_TAU = 1 / TAU;
 
 #endif

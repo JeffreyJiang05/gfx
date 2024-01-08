@@ -36,6 +36,8 @@ antialias_test: $(BUILD_DIR)antialias_test
 	$(BUILD_DIR)antialias_test
 triangle_test: $(BUILD_DIR)triangle_test
 	$(BUILD_DIR)triangle_test
+constexpr_test: $(BUILD_DIR)constexpr_test
+	$(BUILD_DIR)constexpr_test 
 
 $(BUILD_DIR)vec_test: $(BUILD_DIR) $(OBJECTS) $(BUILD_TEST_DIR)vec_test.o 
 	$(CC) $(BUILD_TEST_DIR)vec_test.o $(OBJECTS) $(FLAGS) -o $(BUILD_DIR)vec_test
@@ -57,6 +59,8 @@ $(BUILD_DIR)antialias_test: $(BUILD_DIR) $(IMAGE_DIR) $(OBJECTS) $(BUILD_TEST_DI
 	$(CC) $(BUILD_TEST_DIR)antialias_test.o $(OBJECTS) $(FLAGS) -o $(BUILD_DIR)antialias_test
 $(BUILD_DIR)triangle_test: $(BUILD_DIR) $(IMAGE_DIR) $(OBJECTS) $(BUILD_TEST_DIR)triangle_test.o 
 	$(CC) $(BUILD_TEST_DIR)triangle_test.o $(OBJECTS) $(FLAGS) -o $(BUILD_DIR)triangle_test
+$(BUILD_DIR)constexpr_test: $(BUILD_DIR) $(IMAGE_DIR) $(OBJECTS) $(BUILD_TEST_DIR)constexpr_test.o 
+	$(CC) $(BUILD_TEST_DIR)constexpr_test.o $(OBJECTS) $(FLAGS) -o $(BUILD_DIR)constexpr_test
 
 $(BUILD_TEST_DIR)%.o: $(TEST_DIR)%.cpp
 	$(CC) $(FLAGS) -c $< -o $@

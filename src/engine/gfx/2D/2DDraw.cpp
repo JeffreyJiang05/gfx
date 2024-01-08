@@ -192,17 +192,18 @@ namespace gfx::GFX2D {
         xbegin = v0.x();
         xend = v0.x();
 
-        for (unsigned y = static_cast<unsigned>(v0.y()); y <= static_cast<unsigned>(v2.y()); ++y, xbegin += dx0, xend += dx1)
+        for (int y = static_cast<int>(v0.y()); y <= static_cast<int>(v2.y()); ++y, xbegin += dx0, xend += dx1)
         {
-            if (y == static_cast<unsigned>(v1.y()))
+            if (y == static_cast<int>(v1.y()))
             {
                 dx1 = temp;
                 xend = v1.x();
             }
             auto [xmin, xmax] = std::minmax(xbegin, xend);
-            for (unsigned x = static_cast<unsigned>(xmin); x < static_cast<unsigned>(xmax); ++x)
+            for (int x = static_cast<int>(xmin); x < static_cast<int>(xmax); ++x)
             {
-                image.set(x, y, pixel);
+                if ((unsigned) x <= image.width() && (unsigned) y <= image.height())
+                    image.set(x, y, pixel);
             }
         }
     }

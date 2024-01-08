@@ -2,13 +2,13 @@
 
 // CONSTRUCTORS
 template<typename T>
-matrix<2,2,T>::matrix() : _data{ vec<2,T>{ 1, 0 }, vec<2,T>{ 0, 1 } } {}
+constexpr matrix<2,2,T>::matrix() : _data{ vec<2,T>{ 1, 0 }, vec<2,T>{ 0, 1 } } {}
 
 template<typename T>
-matrix<2,2,T>::matrix(value_type fill) : _data{ vec<2,T>{ fill, fill }, vec<2,T>{ fill, fill } } {}
+constexpr matrix<2,2,T>::matrix(value_type fill) : _data{ vec<2,T>{ fill, fill }, vec<2,T>{ fill, fill } } {}
 
 template<typename T>
-matrix<2,2,T>::matrix(vec<2,T> c0, vec<2,T> c1) : _data{ c0, c1 } {}
+constexpr matrix<2,2,T>::matrix(vec<2,T> c0, vec<2,T> c1) : _data{ c0, c1 } {}
 
 template<typename T>
 template<typename U>
@@ -22,7 +22,7 @@ auto matrix<2,2,T>::operator[](unsigned idx) -> col_type&
 }
 
 template<typename T>
-auto matrix<2,2,T>::operator[](unsigned idx) const -> const col_type&
+constexpr auto matrix<2,2,T>::operator[](unsigned idx) const -> const col_type&
 {
     return _data[idx];
 }
@@ -35,7 +35,7 @@ auto matrix<2,2,T>::at(unsigned idx) -> col_type&
 }
 
 template<typename T>
-auto matrix<2,2,T>::at(unsigned idx) const -> const col_type&
+constexpr auto matrix<2,2,T>::at(unsigned idx) const -> const col_type&
 {
     if (idx >= 2) throw std::out_of_range{ "Index " + std::to_string(idx) + " out of range for mat2x2." };
     return _data[idx];

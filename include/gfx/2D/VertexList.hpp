@@ -20,8 +20,8 @@ GFX_GFX2D_BEGIN
 class VertexList
 {
 public:
-    using vertex_type = vec3;
-    using list_type = std::vector<vertex_type>;
+    using value_type = vec3;
+    using list_type = std::vector<value_type>;
 private:
     list_type _vertices;
     

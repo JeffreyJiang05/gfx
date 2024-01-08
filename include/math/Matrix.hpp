@@ -24,22 +24,22 @@ private:
     col_type _data[2];
 public: 
     // CONSTRUCTORS
-    matrix();
+    constexpr matrix();
     matrix(const matrix&) = default;
     matrix(matrix&&) = default;
 
-    explicit matrix(value_type fill);
+    constexpr explicit matrix(value_type fill);
 
-    explicit matrix(vec<2,T> c0, vec<2,T> c1);
+    constexpr explicit matrix(vec<2,T> c0, vec<2,T> c1);
 
     template<typename U>
     explicit matrix(const matrix<2,2,U>& cpy);
 
     // ACCESSORS + MODIFIERS
     col_type& operator[](unsigned idx);
-    const col_type& operator[](unsigned idx) const;
+    constexpr const col_type& operator[](unsigned idx) const;
     col_type& at(unsigned idx);
-    const col_type& at(unsigned idx) const;
+    constexpr const col_type& at(unsigned idx) const;
 
     // ASSIGNMENT
     matrix& operator=(const matrix&) = default;
@@ -91,21 +91,21 @@ private:
     col_type _data[3];
 public: 
     // CONSTRUCTORS
-    matrix();
+    constexpr matrix();
     matrix(const matrix&) = default;
     matrix(matrix&&) = default;
 
-    explicit matrix(value_type fill);
+    constexpr explicit matrix(value_type fill);
 
-    explicit matrix(vec<3,T> c0, vec<3,T> c1, vec<3,T> c2);
+    constexpr explicit matrix(vec<3,T> c0, vec<3,T> c1, vec<3,T> c2);
 
     template<typename U>
     explicit matrix(const matrix<3,3,U>& cpy);
 
     col_type& operator[](unsigned idx);
-    const col_type& operator[](unsigned idx) const;
+    constexpr const col_type& operator[](unsigned idx) const;
     col_type& at(unsigned idx);
-    const col_type& at(unsigned idx) const;
+    constexpr const col_type& at(unsigned idx) const;
 
     // EXPLICIT CONVERSION
     template<unsigned Dim, typename U, typename Enable = std::enable_if<(Dim <= 3 && Dim <= 3 && std::is_convertible_v<T,U>)>>
@@ -161,21 +161,21 @@ private:
     col_type _data[4];
 public: 
     // CONSTRUCTORS
-    matrix();
+    constexpr matrix();
     matrix(const matrix&) = default;
     matrix(matrix&&) = default;
 
-    explicit matrix(value_type fill);
+    constexpr explicit matrix(value_type fill);
 
-    explicit matrix(vec<4,T> c0, vec<4,T> c1, vec<4,T> c2, vec<4,T> c3);
+    constexpr explicit matrix(vec<4,T> c0, vec<4,T> c1, vec<4,T> c2, vec<4,T> c3);
 
     template<typename U>
     explicit matrix(const matrix<4,4,U>& cpy);
 
     col_type& operator[](unsigned idx);
-    const col_type& operator[](unsigned idx) const;
+    constexpr const col_type& operator[](unsigned idx) const;
     col_type& at(unsigned idx);
-    const col_type& at(unsigned idx) const;
+    constexpr const col_type& at(unsigned idx) const;
 
     // EXPLICIT CONVERSION
     template<unsigned Dim, typename U, typename Enable = std::enable_if<(Dim <= 4 && Dim <= 4 && std::is_convertible_v<T,U>)>>
@@ -230,56 +230,32 @@ using mat4x4 = matrix<4,4,double>;
 
 // BINARY OPERATIONS
 template<unsigned Dim, typename T, typename U>
-matrix<Dim,Dim,RESULT(T,U,+)> operator+(const matrix<Dim,Dim,T>& m1, const matrix<Dim,Dim,U>& m2);
+constexpr matrix<Dim,Dim,RESULT(T,U,+)> operator+(const matrix<Dim,Dim,T>& m1, const matrix<Dim,Dim,U>& m2);
 
 template<unsigned Dim, typename T, typename U>
-matrix<Dim,Dim,RESULT(T,U,-)> operator-(const matrix<Dim,Dim,T>& m1, const matrix<Dim,Dim,U>& m2);
+constexpr matrix<Dim,Dim,RESULT(T,U,-)> operator-(const matrix<Dim,Dim,T>& m1, const matrix<Dim,Dim,U>& m2);
 
-template<typename T, typename U>
-matrix<2,2,RESULT(T,U,*)> operator*(const matrix<2,2,T>& m1, const matrix<2,2,U>& m2);
+template<unsigned Dim, typename T, typename U>
+constexpr matrix<Dim,Dim,RESULT(T,U,*)> operator*(const matrix<Dim,Dim,T>& m1, const matrix<Dim,Dim,U>& m2);
 
-template<typename T, typename U>
-matrix<3,3,RESULT(T,U,*)> operator*(const matrix<3,3,T>& m1, const matrix<3,3,U>& m2);
+template<unsigned Dim, typename T, typename U>
+constexpr vec<Dim,RESULT(T,U,*)> operator*(const matrix<Dim,Dim,T>& m, const vec<Dim,U>& v);
 
-template<typename T, typename U>
-matrix<4,4,RESULT(T,U,*)> operator*(const matrix<4,4,T>& m1, const matrix<4,4,U>& m2);
+template<unsigned Dim, typename T, typename U>
+constexpr matrix<Dim,Dim,RESULT(T,U,*)> operator*(const matrix<Dim,Dim,T>& m, U val);
 
-template<typename T, typename U>
-vec<2,RESULT(T,U,*)> operator*(const matrix<2,2,T>& m, const vec<2,U>& v);
-
-template<typename T, typename U>
-vec<3,RESULT(T,U,*)> operator*(const matrix<3,3,T>& m, const vec<3,U>& v);
-
-template<typename T, typename U>
-vec<4,RESULT(T,U,*)> operator*(const matrix<4,4,T>& m, const vec<4,U>& v);
+template<unsigned Dim, typename T, typename U>
+constexpr matrix<Dim,Dim,RESULT(T,U,/)> operator/(const matrix<Dim,Dim,T>& m, U val);
 
 // BASIC MATRIX OPERATIONS
-template<typename T>
-matrix<2,2,T> transpose(const matrix<2,2,T>& m);
+template<unsigned N, typename T>
+constexpr matrix<N,N,T> transpose(const matrix<N,N,T>& m);
 
-template<typename T>
-matrix<3,3,T> transpose(const matrix<3,3,T>& m);
+template<unsigned N, typename T>
+constexpr T determinant(const matrix<N,N,T>& m);
 
-template<typename T>
-matrix<4,4,T> transpose(const matrix<4,4,T>& m);
-
-template<typename T>
-T determinant(const matrix<2,2,T>& m);
-
-template<typename T>
-T determinant(const matrix<3,3,T>& m);
-
-template<typename T>
-T determinant(const matrix<4,4,T>& m);
-
-template<typename T>
-matrix<2,2,T> inverse(const matrix<2,2,T>& m);
-
-template<typename T>
-matrix<3,3,T> inverse(const matrix<3,3,T>& m);
-
-template<typename T>
-matrix<4,4,T> inverse(const matrix<4,4,T>& m);
+template<unsigned N, typename T>
+constexpr matrix<N,N,T> inverse(const matrix<N,N,T>& m);
 
 // STREAM OPERATOR
 template<unsigned Col, unsigned Row, typename T>

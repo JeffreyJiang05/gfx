@@ -119,6 +119,12 @@ DataList<N, Ts...> operator*(matrix<N, N, double> mat, const DataList<N, Ts...>&
     return res;
 }
 
+template<unsigned N, typename... Ts>
+vec<N, double>& get_vertex(std::tuple<vec<N, double>, Ts...>& datum)
+{
+    return std::get<0>(datum);
+}
+
 GFX_GFX2D_END
 GFX_END
 

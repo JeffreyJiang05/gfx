@@ -10,12 +10,5 @@ namespace gfx::GFX2D
         {
             return &_edge;
         }
-
-        triangle_wrapper::triangle_wrapper(triangle_vertices points) : _vertices{ points } {}
-
-        auto triangle_wrapper::operator->() const -> const triangle_vertices*
-        {
-            return &_vertices;
-        }
     }
 }

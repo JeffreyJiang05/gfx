@@ -2,30 +2,30 @@
 
 // default constructible
 template<typename T>
-vec<4, T>::vec() : _data{} {}
+constexpr vec<4, T>::vec() : _data{} {}
 
 // initialize data explicitly
 template<typename T>
-vec<4, T>::vec(value_type x, value_type y, value_type z, value_type w) : _data{ x, y, z, w } {}
+constexpr vec<4, T>::vec(value_type x, value_type y, value_type z, value_type w) : _data{ x, y, z, w } {}
 
 template<typename T>
 template<typename U>
-vec<4,T>::vec(const vec<3,U>& vec, value_type w) : _data{ static_cast<T>(vec[0]), static_cast<T>(vec[1]), static_cast<T>(vec[2]), w } {}
+constexpr vec<4,T>::vec(const vec<3,U>& vec, value_type w) : _data{ static_cast<T>(vec[0]), static_cast<T>(vec[1]), static_cast<T>(vec[2]), w } {}
 
 
 template<typename T>
 template<typename U>
-vec<4,T>::vec(const vec<2,U>& vec, value_type z, value_type w) : _data{ static_cast<T>(vec[0]), static_cast<T>(vec[1]), z, w } {}
+constexpr vec<4,T>::vec(const vec<2,U>& vec, value_type z, value_type w) : _data{ static_cast<T>(vec[0]), static_cast<T>(vec[1]), z, w } {}
 
 // copy constructible from castible type
 template<typename T>
 template<typename U>
-vec<4, T>::vec(const vec<4,U>& cpy) : _data{ static_cast<T>(cpy[0]), static_cast<T>(cpy[1]), static_cast<T>(cpy[2]), static_cast<T>(cpy[3]) } {}
+constexpr vec<4, T>::vec(const vec<4,U>& cpy) : _data{ static_cast<T>(cpy[0]), static_cast<T>(cpy[1]), static_cast<T>(cpy[2]), static_cast<T>(cpy[3]) } {}
 
 // initialize data of convertible type
 template<typename T>
 template<typename T0, typename T1, typename T2, typename T3>
-vec<4, T>::vec(T0 x, T1 y, T2 z, T3 w) : _data{ static_cast<T>(x), static_cast<T>(y), static_cast<T>(z), static_cast<T>(w) } {}
+constexpr vec<4, T>::vec(T0 x, T1 y, T2 z, T3 w) : _data{ static_cast<T>(x), static_cast<T>(y), static_cast<T>(z), static_cast<T>(w) } {}
 
 // access through subscript operator. no bounds checking
 template<typename T>
@@ -35,7 +35,7 @@ auto vec<4, T>::operator[](unsigned idx) -> value_type&
 }
 
 template<typename T>
-auto vec<4, T>::operator[](unsigned idx) const -> const value_type&
+constexpr auto vec<4, T>::operator[](unsigned idx) const -> const value_type&
 {
     return _data[idx];
 }
@@ -49,7 +49,7 @@ auto vec<4, T>::at(unsigned idx) -> value_type&
 }
 
 template<typename T>
-auto vec<4, T>::at(unsigned idx) const -> const value_type&
+constexpr auto vec<4, T>::at(unsigned idx) const -> const value_type&
 {
     if (idx >= 4) throw std::out_of_range{ "Index " + std::to_string(idx) + " out of range for vec4." };
     return _data[idx];
@@ -57,25 +57,25 @@ auto vec<4, T>::at(unsigned idx) const -> const value_type&
 
 // access elements through common name. returns by value
 template<typename T>
-auto vec<4,T>::x() const -> value_type
+constexpr auto vec<4,T>::x() const -> value_type
 {
     return _data[0];
 }
 
 template<typename T>
-auto vec<4,T>::y() const -> value_type
+constexpr auto vec<4,T>::y() const -> value_type
 {
     return _data[1];
 }
 
 template<typename T>
-auto vec<4,T>::z() const -> value_type
+constexpr auto vec<4,T>::z() const -> value_type
 {
     return _data[2];
 }
 
 template<typename T>
-auto vec<4,T>::w() const -> value_type
+constexpr auto vec<4,T>::w() const -> value_type
 {
     return _data[3];
 }

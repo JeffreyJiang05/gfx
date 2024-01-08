@@ -2,21 +2,21 @@
 
 // CONSTRUCTORS
 template<typename T>
-matrix<4,4,T>::matrix() : _data{ 
+constexpr matrix<4,4,T>::matrix() : _data{ 
     vec<4,T>{ 1, 0, 0, 0 }, 
     vec<4,T>{ 0, 1, 0, 0 }, 
     vec<4,T>{ 0, 0, 1, 0 },
     vec<4,T>{ 0, 0, 0, 1 } } {}
 
 template<typename T>
-matrix<4,4,T>::matrix(value_type fill) : _data{ 
+constexpr matrix<4,4,T>::matrix(value_type fill) : _data{ 
     vec<4,T>{ fill, fill, fill, fill }, 
     vec<4,T>{ fill, fill, fill, fill }, 
     vec<4,T>{ fill, fill, fill, fill },
     vec<4,T>{ fill, fill, fill, fill } } {}
 
 template<typename T>
-matrix<4,4,T>::matrix(vec<4,T> c0, vec<4,T> c1, vec<4,T> c2, vec<4,T> c3) : _data{ c0, c1, c2, c3 } {}
+constexpr matrix<4,4,T>::matrix(vec<4,T> c0, vec<4,T> c1, vec<4,T> c2, vec<4,T> c3) : _data{ c0, c1, c2, c3 } {}
 
 template<typename T>
 template<typename U>
@@ -34,7 +34,7 @@ auto matrix<4,4,T>::operator[](unsigned idx) -> col_type&
 }
 
 template<typename T>
-auto matrix<4,4,T>::operator[](unsigned idx) const -> const col_type&
+constexpr auto matrix<4,4,T>::operator[](unsigned idx) const -> const col_type&
 {
     return _data[idx];
 }
@@ -47,7 +47,7 @@ auto matrix<4,4,T>::at(unsigned idx) -> col_type&
 }
 
 template<typename T>
-auto matrix<4,4,T>::at(unsigned idx) const -> const col_type&
+constexpr auto matrix<4,4,T>::at(unsigned idx) const -> const col_type&
 {
     if (idx >= 4) throw std::out_of_range{ "Index " + std::to_string(idx) + " out of range for mat4x4." };
     return _data[idx];

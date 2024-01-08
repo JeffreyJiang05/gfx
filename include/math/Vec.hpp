@@ -27,28 +27,28 @@ private:
     value_type _data[2];
 public:
     // CONSTRUCTORS
-    vec();
+    constexpr vec();
     vec(const vec&) = default;
     vec(vec&&) = default;
     vec& operator=(const vec&) = default;
     vec& operator=(vec&&) = default;
 
-    explicit vec(value_type x, value_type y);
+    explicit constexpr vec(value_type x, value_type y);
 
     template<typename U>
-    explicit vec(const vec<2,U>& cpy);
+    explicit constexpr vec(const vec<2,U>& cpy);
 
     template<typename T0, typename T1>
-    explicit vec(T0 x, T1 y);
+    explicit constexpr vec(T0 x, T1 y);
 
     // ACCESSORS + MODIFIERS
     value_type& operator[](unsigned idx);
-    const value_type& operator[](unsigned idx) const;
+    constexpr const value_type& operator[](unsigned idx) const;
     value_type& at(unsigned idx);
-    const value_type& at(unsigned idx) const;
+    constexpr const value_type& at(unsigned idx) const;
 
-    value_type x() const;
-    value_type y() const;
+    constexpr value_type x() const;
+    constexpr value_type y() const;
 
     // OPERATORS
     template<typename U>
@@ -91,32 +91,32 @@ private:
     value_type _data[3];
 public:
     // CONSTRUCTORS
-    vec();
+    constexpr vec();
     vec(const vec&) = default;
     vec(vec&&) = default;
     vec& operator=(const vec&) = default;
     vec& operator=(vec&&) = default;
 
-    explicit vec(value_type x, value_type y, value_type z);
+    explicit constexpr vec(value_type x, value_type y, value_type z);
 
     template<typename U>
-    explicit vec(const vec<2, U>& vec, value_type z);
+    explicit constexpr vec(const vec<2, U>& vec, value_type z);
 
     template<typename U>
-    explicit vec(const vec<3,U>& cpy);
+    explicit constexpr vec(const vec<3,U>& cpy);
 
     template<typename T0, typename T1, typename T2>
-    explicit vec(T0 x, T1 y, T2 z);
+    explicit constexpr vec(T0 x, T1 y, T2 z);
 
     // ACCESSORS + MODIFIERS
     value_type& operator[](unsigned idx);
-    const value_type& operator[](unsigned idx) const;
+    constexpr const value_type& operator[](unsigned idx) const;
     value_type& at(unsigned idx);
-    const value_type& at(unsigned idx) const;
+    constexpr const value_type& at(unsigned idx) const;
 
-    value_type x() const;
-    value_type y() const;
-    value_type z() const;
+    constexpr value_type x() const;
+    constexpr value_type y() const;
+    constexpr value_type z() const;
 
     // EXPLICIT CONVERSIONS
     template<typename U>
@@ -159,39 +159,39 @@ class vec<4, T>
 public:
     using value_type = T;
 private:
-    double _data[4];
+    value_type _data[4];
 public:
     // CONSTRUCTORS
-    vec();
+    constexpr vec();
     vec(const vec&) = default;
     vec(vec&&) = default;
     vec& operator=(const vec&) = default;
     vec& operator=(vec&&) = default;
 
-    vec(value_type x, value_type y, value_type z, value_type w);
+    constexpr vec(value_type x, value_type y, value_type z, value_type w);
 
     template<typename U>
-    vec(const vec<2,U>& vec, value_type z, value_type w);
+    constexpr vec(const vec<2,U>& vec, value_type z, value_type w);
 
     template<typename U>
-    vec(const vec<3,U>& vec, value_type w);
+    constexpr vec(const vec<3,U>& vec, value_type w);
 
     template<typename U>
-    explicit vec(const vec<4,U>& cpy);
+    constexpr explicit vec(const vec<4,U>& cpy);
 
     template<typename T0, typename T1, typename T2, typename T3>
-    explicit vec(T0 x, T1 y, T2 z, T3 w);
+    constexpr explicit vec(T0 x, T1 y, T2 z, T3 w);
 
     // ACCESSORS + MODIFIERS
     value_type& operator[](unsigned idx);
-    const value_type& operator[](unsigned idx) const;
+    constexpr const value_type& operator[](unsigned idx) const;
     value_type& at(unsigned idx);
-    const value_type& at(unsigned idx) const;
+    constexpr const value_type& at(unsigned idx) const;
 
-    value_type x() const;
-    value_type y() const;
-    value_type z() const;
-    value_type w() const;
+    constexpr value_type x() const;
+    constexpr value_type y() const;
+    constexpr value_type z() const;
+    constexpr value_type w() const;
 
     // EXPLICIT CONVERSIONS
     template<typename U>
@@ -248,52 +248,52 @@ using ivec4 = vec<4, int>;
 
 // COMPARISON OPERATORS
 template<unsigned N, typename T, typename U>
-bool operator==(const vec<N,T>& a, const vec<N,U>& b);
+constexpr bool operator==(const vec<N,T>& a, const vec<N,U>& b);
 
 template<unsigned N, typename T, typename U>
-bool operator!=(const vec<N,T>& a, const vec<N,U>& b);
+constexpr bool operator!=(const vec<N,T>& a, const vec<N,U>& b);
 
 // BASIC PAIRWISE ARITHMETIC OPERATORS
 template<unsigned N, typename T, typename U>
-vec<N,std::common_type_t<T,U>> operator+(const vec<N,T>& a, const vec<N,U>& b);
+constexpr vec<N,std::common_type_t<T,U>> operator+(const vec<N,T>& a, const vec<N,U>& b);
 
 template<unsigned N, typename T, typename U>
-vec<N,std::common_type_t<T,U>> operator-(const vec<N,T>& a, const vec<N,U>& b);
+constexpr vec<N,std::common_type_t<T,U>> operator-(const vec<N,T>& a, const vec<N,U>& b);
 
 template<unsigned N, typename T, typename U>
-vec<N,std::common_type_t<T,U>> operator*(const vec<N,T>& a, const vec<N,U>& b);
+constexpr vec<N,std::common_type_t<T,U>> operator*(const vec<N,T>& a, const vec<N,U>& b);
 
 template<unsigned N, typename T, typename U>
-vec<N,std::common_type_t<T,U>> operator/(const vec<N,T>& a, const vec<N,U>& b);
+constexpr vec<N,std::common_type_t<T,U>> operator/(const vec<N,T>& a, const vec<N,U>& b);
 
 // VECTOR-SCALAR OPERATIONS
 template<unsigned N, typename T, typename U>
-vec<N,std::common_type_t<T,U>> operator+(const vec<N,T>& a, U k);
+constexpr vec<N,std::common_type_t<T,U>> operator+(const vec<N,T>& a, U k);
 
 template<unsigned N, typename T, typename U>
-vec<N,std::common_type_t<T,U>> operator-(const vec<N,T>& a, U k);
+constexpr vec<N,std::common_type_t<T,U>> operator-(const vec<N,T>& a, U k);
 
 template<unsigned N, typename T, typename U>
-vec<N,std::common_type_t<T,U>> operator*(const vec<N,T>& a, U k);
+constexpr vec<N,std::common_type_t<T,U>> operator*(const vec<N,T>& a, U k);
 
 template<unsigned N, typename T, typename U>
-vec<N,std::common_type_t<T,U>> operator/(const vec<N,T>& a, U k);
+constexpr vec<N,std::common_type_t<T,U>> operator/(const vec<N,T>& a, U k);
 
 template<unsigned N, typename U, typename T>
-vec<N,std::common_type_t<U,T>> operator+(U k, const vec<N,T>& a);
+constexpr vec<N,std::common_type_t<U,T>> operator+(U k, const vec<N,T>& a);
 
 template<unsigned N, typename U, typename T>
-vec<N,std::common_type_t<U,T>> operator-(U k, const vec<N,T>& a);
+constexpr vec<N,std::common_type_t<U,T>> operator-(U k, const vec<N,T>& a);
 
 template<unsigned N, typename U, typename T>
-vec<N,std::common_type_t<U,T>> operator*(U k, const vec<N,T>& a);
+constexpr vec<N,std::common_type_t<U,T>> operator*(U k, const vec<N,T>& a);
 
 template<unsigned N, typename U, typename T>
-vec<N,std::common_type_t<U,T>> operator/(U k, const vec<N,T>& a);
+constexpr vec<N,std::common_type_t<U,T>> operator/(U k, const vec<N,T>& a);
 
 // VECTOR OPERATIONS
 template<typename T>
-vec<3,T> cross(const vec<3,T>& a, const vec<3,T>& b);
+constexpr vec<3,T> cross(const vec<3,T>& a, const vec<3,T>& b);
 
 template<unsigned N,typename T>
 T dot(const vec<N,T>& a, const vec<N,T>& b);

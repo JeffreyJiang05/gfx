@@ -122,10 +122,11 @@ namespace _details
     template<typename Container>
     struct is_index_container : std::bool_constant<is_index_container_v<Container>> {};
 
+    template<typename ListType>
     class triangle_wrapper
     {
     private:
-        using triangle_vertices = std::tuple<vec3, vec3, vec3>;
+        using triangle_vertices = std::tuple<typename ListType::value_type, typename ListType::value_type, typename ListType::value_type>;
         triangle_vertices _vertices;
     public:
         triangle_wrapper(triangle_vertices points);
@@ -135,23 +136,23 @@ namespace _details
 }
 
 // Triangle Adapter Iterator
-template<typename IdxContainer>
+template<typename IdxContainer, typename ListType>
 class triangle_iterator
 {
 private:
     const IdxContainer& _indices;
-    const VertexList& _vertices;
+    const ListType& _vertices;
     unsigned int _pos;
 public:
-    using vertices = std::tuple<vec3, vec3, vec3>;
+    using vertices = std::tuple<typename ListType::value_type, typename ListType::value_type, typename ListType::value_type>;
 
     using iterator_category = std::bidirectional_iterator_tag;
     using difference_type = std::ptrdiff_t;
     using value_type = vertices;
-    using pointer = _details::triangle_wrapper;
+    using pointer = _details::triangle_wrapper<ListType>;
     using reference = vertices;
 
-    triangle_iterator(const IdxContainer& indices, const VertexList& vertices, unsigned int pos);
+    triangle_iterator(const IdxContainer& indices, const ListType& vertices, unsigned int pos);
 
     reference operator*() const;
     pointer operator->() const;
@@ -160,24 +161,24 @@ public:
     triangle_iterator& operator--();
     triangle_iterator operator--(int);
 
-    template<typename Container>
-    friend bool operator==(const triangle_iterator<Container>& a, const triangle_iterator<Container>& b);
-    template<typename Container>
-    friend bool operator!=(const triangle_iterator<Container>& a, const triangle_iterator<Container>& b);
+    template<typename Container, typename List>
+    friend bool operator==(const triangle_iterator<Container, List>& a, const triangle_iterator<Container, List>& b);
+    template<typename Container, typename List>
+    friend bool operator!=(const triangle_iterator<Container, List>& a, const triangle_iterator<Container, List>& b);
 };
 
 // Triangle Adapter to wrap VertexList and an index list. 
-template<typename IdxContainer, typename Enable = std::enable_if<_details::is_index_container_v<IdxContainer>>>
+template<typename ListType, typename IdxContainer, typename Enable = std::enable_if<_details::is_index_container_v<IdxContainer>>>
 class Triangles
 {
 private:
-    const VertexList& _vertices;
+    const ListType& _vertices;
     const IdxContainer& _indices;
 public:
-    using iterator = triangle_iterator<IdxContainer>;
+    using iterator = triangle_iterator<IdxContainer, ListType>;
     using const_iterator = iterator; // since these iterators are read-only
 
-    Triangles(const VertexList& vertices, const IdxContainer& indices);
+    Triangles(const ListType& vertices, const IdxContainer& indices);
 
     iterator begin();
     const_iterator cbegin() const;
